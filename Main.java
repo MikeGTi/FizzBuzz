@@ -11,12 +11,11 @@ public class Main {
 
         //On classes (https://www.youtube.com/watch?v=TWmmfDvcYO0&t=1241s on typeScript)
         ArrayList<Object> rulesColl = new ArrayList<Object>(List.of(
-        new TagNumRule(new Tag("FizzBuzz"),new AndStrategy(new ArrayList<Object>(List.of(new DividerCondition(3),new DividerCondition(5))))),
-        new TagNumRule(new Tag("Fizz"),new AndStrategy(new ArrayList<Object>(List.of(new DividerCondition(3))))),
-        new TagNumRule(new Tag("Buzz"),new AndStrategy(new ArrayList<Object>(List.of(new DividerCondition(5)))))));
+            new TagNumRule(new Tag("FizzBuzz"),new AndStrategy(new ArrayList<Object>(List.of(new DividerCondition(3),new DividerCondition(5))))),
+            new TagNumRule(new Tag("Fizz"),new AndStrategy(new ArrayList<Object>(List.of(new DividerCondition(3))))),
+            new TagNumRule(new Tag("Buzz"),new AndStrategy(new ArrayList<Object>(List.of(new DividerCondition(5)))))));
 
-        TagNumRulesCollection numTags;
-        numTags = new TagNumRulesCollection(rulesColl);
+        TagNumRulesCollection numTags = new TagNumRulesCollection(rulesColl);
 
         for (int i = 0; i < MAX_NUM; i++) {
             new Printer(numTags.find(i, String.valueOf(new Tag(i)))).PrintLn();
@@ -48,37 +47,37 @@ public class Main {
     }
 }
 
-
-    abstract class Condition {
-        public abstract boolean isTruthy(int num);
+class Printer {
+    private String context;
+    Printer(String _context) {
+        this.context = _context;
     }
 
-    class Printer {
-        private String context;
+    void PrintLn() {
+        System.out.println(context);
+    }
 
-        Printer(String _context) {
-            this.context = _context;
-        }
-
-        void PrintLn() {
-            System.out.println(context);
-        }
-
-        void PrintFile(){
-            String[] lines = context.split("\n");
-            for(String line : lines){
-                System.out.println(line);
-            }
+    void PrintFile(){
+        String[] lines = context.split("\n");
+        for(String line : lines){
+            System.out.println(line);
         }
     }
 
-    abstract class Strategy implements ITruthy {
-        public abstract boolean isTruthy(int num);
-        /* extends Strategy */
-    }
-    interface ITruthy{
-        boolean isTruthy(int num);
-    }
+}
+
+abstract class Condition {
+    public abstract boolean isTruthy(int num);
+}
+
+abstract class Strategy implements ITruthy {
+    public abstract boolean isTruthy(int num);
+    /* extends Strategy */
+}
+
+interface ITruthy{
+    boolean isTruthy(int num);
+}
 
 class Tag{
     private String value;
@@ -87,6 +86,7 @@ class Tag{
         //this.value = String.valueOf(_value);
         this.value = String.valueOf(_value);
     }
+
     Tag(String _value) {
         this.value = _value;
     }
@@ -129,6 +129,7 @@ class AndStrategy extends Strategy {
         return true;
     }
 }
+
 class TagNumRule {
     public Tag tag;
     private Strategy strategy;
